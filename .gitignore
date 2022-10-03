@@ -156,4 +156,4 @@ cython_debug/
 .upm/
 images/
 books/
-.bs4_tutorial.py
+.bs4_tutorial
