@@ -3,6 +3,7 @@ import urllib.parse
 from pathlib import Path
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
+import argparse
 
 
 def download_txt_book(book_id, filename):
@@ -72,12 +73,18 @@ def parse_book_page(book_id):
         print('Книга:', book_title)
         print('Автор:', book_author)
         print('Жанр:', get_book_genre(response))
-        print('Комментарии', get_book_comments(response))
+        print('Комментарии:', get_book_comments(response))
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Enter id_from and id_to, for parsing books'
+    )
+    parser.add_argument('id_from', help='initial id')
+    parser.add_argument('id_to', help='final id')
+    args = parser.parse_args()
     # Отключенные создания папок пока нет сохранения книг и обложек
     # Path('./books').mkdir(parents=True, exist_ok=True)
     # Path('./img').mkdir(parents=True, exist_ok=True)
-    for book_id in range(5, 11):
+    for book_id in range(int(args.id_from), int(args.id_to) + 1):
         parse_book_page(book_id)
