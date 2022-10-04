@@ -50,6 +50,17 @@ def get_book_comments(response):
     return comments_texts
 
 
+def get_book_genre(response):
+    soup = BeautifulSoup(response.text, 'lxml')
+    genres_soup = soup.find_all('span', class_='d_book')
+    for item in genres_soup:
+        genres_with_tags = item.find_all('a')
+        genres = []
+    for genre in genres_with_tags:
+        genres.append(genre.text)
+    return genres
+
+
 if __name__ == '__main__':
     Path('./books').mkdir(parents=True, exist_ok=True)
     Path('./img').mkdir(parents=True, exist_ok=True)
@@ -58,10 +69,10 @@ if __name__ == '__main__':
         response = requests.get(url)
         response.raise_for_status()
         if response.url == url:
-            book_img_url, book_title, book_author = get_book_params(response)
-            download_txt_book(book_id, book_title)
-            download_book_img(book_img_url)
-            # print(book_title)
-            # print(book_author)
-            # print(book_img_url)
+            # book_img_url, book_title, book_author = get_book_params(response)
+            # download_txt_book(book_id, book_title)
+            # download_book_img(book_img_url)
+            print(get_book_params(response))
+            print(get_book_genre(response))
+            print(get_book_comments(response))
         # save_txt_book(book_id, book_title)
