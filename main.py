@@ -61,18 +61,23 @@ def get_book_genre(response):
     return genres
 
 
+def parse_book_page(book_id):
+    url = f'https://tululu.org/b{book_id}/'
+    response = requests.get(url)
+    response.raise_for_status()
+    if response.url == url:
+        book_img_url, book_title, book_author = get_book_params(response)
+        # download_txt_book(book_id, book_title)
+        # download_book_img(book_img_url)
+        print('Книга:', book_title)
+        print('Автор:', book_author)
+        print('Жанр:', get_book_genre(response))
+        print('Комментарии', get_book_comments(response))
+
+
 if __name__ == '__main__':
-    Path('./books').mkdir(parents=True, exist_ok=True)
-    Path('./img').mkdir(parents=True, exist_ok=True)
-    for book_id in range(1, 11):
-        url = f'https://tululu.org/b{book_id}/'
-        response = requests.get(url)
-        response.raise_for_status()
-        if response.url == url:
-            # book_img_url, book_title, book_author = get_book_params(response)
-            # download_txt_book(book_id, book_title)
-            # download_book_img(book_img_url)
-            print(get_book_params(response))
-            print(get_book_genre(response))
-            print(get_book_comments(response))
-        # save_txt_book(book_id, book_title)
+    # Отключенные создания папок пока нет сохранения книг и обложек
+    # Path('./books').mkdir(parents=True, exist_ok=True)
+    # Path('./img').mkdir(parents=True, exist_ok=True)
+    for book_id in range(5, 11):
+        parse_book_page(book_id)
