@@ -5,7 +5,7 @@ from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 
 
-def save_txt_book(book_id, filename):
+def download_txt_book(book_id, filename):
     url = 'https://tululu.org/txt.php'
     params = {
         'id': book_id
@@ -19,6 +19,19 @@ def save_txt_book(book_id, filename):
             file.write(response.content)
 
 
+def download_book_img(img_url):
+    url = f'https://tululu.org/{img_url}'
+    response = requests.get(url)
+    response.raise_for_status()
+    url_parts = urllib.parse.urlparse(response.url)
+    img_path = url_parts.path.split('/')
+    img_name = img_path[-1]
+    if img_name != 'nopic.gif':
+        file_path = f'img/{img_name}'
+        with open(file_path, 'wb') as file:
+            file.write(response.content)
+
+
 def get_book_params(response):
     soup = BeautifulSoup(response.text, 'lxml')
     book_img_url = soup.find(class_='bookimage').find('img')['src']
@@ -27,16 +40,28 @@ def get_book_params(response):
     return book_img_url, book_title, book_author
 
 
+def get_book_comments(response):
+    soup = BeautifulSoup(response.text, 'lxml')
+    comments = soup.find_all(class_='texts')
+    comments_texts = []
+    for comment in comments:
+        comment_text = comment.find('span')
+        comments_texts.append(comment_text.text)
+    return comments_texts
+
+
 if __name__ == '__main__':
     Path('./books').mkdir(parents=True, exist_ok=True)
+    Path('./img').mkdir(parents=True, exist_ok=True)
     for book_id in range(1, 11):
         url = f'https://tululu.org/b{book_id}/'
         response = requests.get(url)
         response.raise_for_status()
         if response.url == url:
             book_img_url, book_title, book_author = get_book_params(response)
-            save_txt_book(book_id, book_title)
-            print(book_title)
-            print(book_author)
-            print(book_img_url)
+            download_txt_book(book_id, book_title)
+            download_book_img(book_img_url)
+            # print(book_title)
+            # print(book_author)
+            # print(book_img_url)
         # save_txt_book(book_id, book_title)
