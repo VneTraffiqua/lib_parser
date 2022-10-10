@@ -17,13 +17,11 @@ def download_txt_book(book_id, filename):
     response = requests.get(url, params=params)
     response.raise_for_status()
     if check_for_redirect(response):
-        return 
-    url_parts = urllib.parse.urlparse(response.url)
-    if url_parts.query:
-        book_name = sanitize_filename(filename)
-        file_path = Path.cwd() / f'books/{book_id}. {book_name}.txt'
-        with open(file_path, 'wb') as file:
-            file.write(response.content)
+        return
+    book_name = sanitize_filename(filename)
+    file_path = Path.cwd() / f'books/{book_id}. {book_name}.txt'
+    with open(file_path, 'wb') as file:
+        file.write(response.content)
 
 
 def download_book_img(img_url):
