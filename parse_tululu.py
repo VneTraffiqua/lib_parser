@@ -59,8 +59,8 @@ def get_book_params(soup):
     return book_img_url, book_title, book_author, genres, comments_texts
 
 
-def check_for_redirect(url, response):
-    if response.url != url:
+def check_for_redirect(response):
+    if response.history:
         raise URLError('Book not found')
 
 
