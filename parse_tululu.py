@@ -16,6 +16,8 @@ def download_txt_book(book_id, filename):
     }
     response = requests.get(url, params=params)
     response.raise_for_status()
+    if check_for_redirect(response):
+        return 
     url_parts = urllib.parse.urlparse(response.url)
     if url_parts.query:
         book_name = sanitize_filename(filename)
@@ -25,7 +27,7 @@ def download_txt_book(book_id, filename):
 
 
 def download_book_img(img_url):
-    url = f'https://tululu.org/{img_url}'
+    url = urllib.parse.urljoin('https://tululu.org', img_url)
     response = requests.get(url)
     response.raise_for_status()
     url_parts = urllib.parse.urlparse(response.url)
@@ -80,7 +82,7 @@ if __name__ == '__main__':
             url = f'https://tululu.org/b{book_id}/'
             response = requests.get(url)
             response.raise_for_status()
-            check_for_redirect(url, response)
+            check_for_redirect(response)
             soup = BeautifulSoup(response.text, 'lxml')
             book_img_url, book_title, book_author, \
                 genres, comments_texts = get_book_params(soup)
