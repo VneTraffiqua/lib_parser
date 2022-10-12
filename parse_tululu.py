@@ -24,8 +24,8 @@ def download_txt_book(book_id, filename):
         file.write(response.content)
 
 
-def download_book_img(img_url):
-    url = urllib.parse.urljoin('https://tululu.org', img_url)
+def download_book_img(url, img_url):
+    url = urllib.parse.urljoin(url, img_url)
     response = requests.get(url)
     response.raise_for_status()
     url_parts = urllib.parse.urlparse(response.url)
@@ -89,7 +89,7 @@ if __name__ == '__main__':
             print('Жанр:', genres)
             print('Комментарии:', comments_texts)
             print()
-            download_book_img(book_img_url)
+            download_book_img(url, book_img_url)
             download_txt_book(book_id, book_title)
             book_id += 1
         except URLError:
