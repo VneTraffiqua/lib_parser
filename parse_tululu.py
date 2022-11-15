@@ -21,6 +21,7 @@ def download_txt_book(book_id, filename):
     file_path = Path.cwd() / f'books/{book_id}. {book_name}.txt'
     with open(file_path, 'wb') as file:
         file.write(response.content)
+    return file_path
 
 
 def download_book_img(url, img_url):
@@ -31,10 +32,11 @@ def download_book_img(url, img_url):
     img_path = url_parts.path.split('/')
     img_name = img_path[-1]
     if img_name == 'nopic.gif':
-        return
+        return Path.cwd() / 'img' / 'nopic.gif'
     file_path = Path.cwd() / f'img/{img_name}'
     with open(file_path, 'wb') as file:
         file.write(response.content)
+    return file_path
 
 
 def get_book_params(soup):
