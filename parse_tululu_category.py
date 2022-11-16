@@ -1,12 +1,12 @@
 import os.path
 import requests
+import argparse
 import re
 import time
 import json
 from bs4 import BeautifulSoup
 import urllib.parse
 from urllib.error import URLError
-
 from pathlib import Path
 from parse_tululu import download_book_img, download_txt_book, \
     check_for_redirect, get_book_params
@@ -14,18 +14,30 @@ from parse_tululu import download_book_img, download_txt_book, \
 
 def get_books_url(soup):
     all_books_path = []
-    all_book_on_page = soup.find(id='content').find_all(class_='bookimage')
+    books_selector = '#content .bookimage a'
+    all_book_on_page = soup.select(books_selector)
     for book in all_book_on_page:
-        path = book.find('a')['href']
+        path = book['href']
         all_books_path.append(path)
     return all_books_path
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Enter start page and last page, for parsing books'
+    )
+    parser.add_argument(
+        '--start_page', type=int, help='start page number', default=1
+    )
+    parser.add_argument(
+        '--last_page', type=int, help='end page number', default=2
+    )
+    args = parser.parse_args()
+    start_page, last_page = args.start_page, args.last_page
     Path('./books').mkdir(parents=True, exist_ok=True)
     Path('./img').mkdir(parents=True, exist_ok=True)
     all_books_params = []
-    for page in range(1, 2):
+    for page in range(start_page, last_page):
         url = f'https://tululu.org/l55/{page}'
         response = requests.get(url)
         response.raise_for_status()
@@ -67,6 +79,7 @@ def main():
     books_json = json.dumps(all_books_params, ensure_ascii=False)
     with open('books.json', 'w') as file:
         file.write(books_json)
+
 
 if __name__ == '__main__':
     main()
