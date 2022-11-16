@@ -40,23 +40,21 @@ def download_book_img(url, img_url):
 
 
 def get_book_params(soup):
-    book_img_url = soup.find(class_='bookimage').find('img')['src']
-    title_tag = soup.find('body').find('h1')
+    book_img_selector = '.bookimage img'
+    book_img_url = soup.select_one(book_img_selector)['src']
+    title_selector = 'body h1'
+    title_tag = soup.select_one(title_selector)
     book_title, temp_str, book_author = title_tag.text.split('\xa0')
-
-    genres_soup = soup.find_all('span', class_='d_book')
-    for item in genres_soup:
-        genres_with_tags = item.find_all('a')
+    genres_selector = 'span.d_book a'
+    genres_with_tags = soup.select(genres_selector)
     genres = []
     for genre in genres_with_tags:
         genres.append(genre.text)
-
-    comments = soup.find_all(class_='texts')
+    comments_selector = '.texts span'
+    comments = soup.select(comments_selector)
     comments_texts = []
     for comment in comments:
-        comment_text = comment.find('span')
-        comments_texts.append(comment_text.text)
-
+        comments_texts.append(comment.text)
     return book_img_url, book_title, book_author, genres, comments_texts
 
 
