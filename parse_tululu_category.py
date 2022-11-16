@@ -29,8 +29,12 @@ def main():
     parser.add_argument(
         '--start_page', type=int, help='start page number', default=1
     )
+    args = parser.parse_args()
     parser.add_argument(
-        '--last_page', type=int, help='end page number', default=2
+        '--last_page',
+        type=int,
+        help='end page number',
+        default=args.start_page + 1
     )
     args = parser.parse_args()
     start_page, last_page = args.start_page, args.last_page
