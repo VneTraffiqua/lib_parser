@@ -24,24 +24,54 @@ def get_books_url(soup):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Enter start page and last page, for parsing books'
+        description='Enter start page and optional param, for parsing books'
     )
     parser.add_argument(
-        '--start_page', type=int, help='start page number', default=1
+        '--start_page',
+        type=int,
+        help='start page number',
+        default=1
     )
-    args = parser.parse_args()
     parser.add_argument(
         '--last_page',
         type=int,
         help='end page number',
-        default=args.start_page + 1
+        default=None
+    )
+    parser.add_argument(
+        '--dest_folder',
+        type=str,
+        help='path to the dir with parsing results: pictures, books, JSON',
+        default='.'
+    )
+    parser.add_argument(
+        '--json_path',
+        type=str,
+        help='your path to *.json file with results',
+        default='./'
+    )
+    parser.add_argument(
+        '--skip_imgs',
+        choices=[True, False],
+        help='if True? do not download pictures',
+        default=False
+    )
+    parser.add_argument(
+        '--skip_txt',
+        choices=[True, False],
+        help='if True? do not download books',
+        default=False
     )
     args = parser.parse_args()
-    start_page, last_page = args.start_page, args.last_page
-    Path('./books').mkdir(parents=True, exist_ok=True)
-    Path('./img').mkdir(parents=True, exist_ok=True)
+
+    Path(f'{args.dest_folder}/books').mkdir(parents=True, exist_ok=True)
+    Path(f'{args.dest_folder}/img').mkdir(parents=True, exist_ok=True)
     all_books_params = []
-    for page in range(start_page, last_page):
+    if args.last_page:
+        last_page = args.last_page
+    else:
+        last_page = args.start_page + 1
+    for page in range(args.start_page, last_page):
         url = f'https://tululu.org/l55/{page}'
         response = requests.get(url)
         response.raise_for_status()
@@ -59,9 +89,11 @@ def main():
                 soup = BeautifulSoup(response.text, 'lxml')
                 book_img_url, book_title, book_author, \
                     genres, comments_texts = get_book_params(soup)
-                img_src = download_book_img(book_url, book_img_url)
+                if not args.skip_imgs:
+                    img_src = download_book_img(book_url, book_img_url)
                 book_id = re.sub(r"[^\d\.]", "", book_path)
-                book_path = download_txt_book(book_id, book_title)
+                if not args.skip_txt:
+                    book_path = download_txt_book(book_id, book_title)
 
                 book_params = {
                     'title': book_title,
@@ -81,7 +113,7 @@ def main():
                 time.sleep(3)
                 continue
     books_json = json.dumps(all_books_params, ensure_ascii=False)
-    with open('books.json', 'w') as file:
+    with open(f'{args.json_path}books.json', 'w') as file:
         file.write(books_json)
 
 
