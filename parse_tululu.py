@@ -47,14 +47,10 @@ def get_book_params(soup):
     book_title, temp_str, book_author = title_tag.text.split('\xa0')
     genres_selector = 'span.d_book a'
     genres_with_tags = soup.select(genres_selector)
-    genres = []
-    for genre in genres_with_tags:
-        genres.append(genre.text)
+    genres = [genre.text for genre in genres_with_tags]
     comments_selector = '.texts span'
     comments = soup.select(comments_selector)
-    comments_texts = []
-    for comment in comments:
-        comments_texts.append(comment.text)
+    comments_texts = [comment.text for comment in comments]
     return book_img_url, book_title, book_author, genres, comments_texts
 
 
