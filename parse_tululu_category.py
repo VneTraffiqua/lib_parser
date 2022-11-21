@@ -14,12 +14,9 @@ from parse_tululu import download_book_img, download_txt_book, \
 
 
 def get_books_url(soup):
-    all_books_path = []
     books_selector = '#content .bookimage a'
     all_books_on_page = soup.select(books_selector)
-    for book in all_books_on_page:
-        path = book['href']
-        all_books_path.append(path)
+    all_books_path = [book['href'] for book in all_books_on_page]
     return all_books_path
 
 
@@ -72,7 +69,7 @@ def main():
     if args.last_page:
         last_page = args.last_page
     else:
-        last_page = page + 1
+        last_page = page
 
     while page <= last_page:
         try:
@@ -111,6 +108,7 @@ def main():
                     all_books_params.append(book_params)
                 except URLError:
                     continue
+                page += 1
         except URLError:
             page += 1
             continue
