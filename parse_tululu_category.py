@@ -15,8 +15,8 @@ from parse_tululu import download_book_img, download_txt_book, \
 def get_books_url(soup):
     all_books_path = []
     books_selector = '#content .bookimage a'
-    all_book_on_page = soup.select(books_selector)
-    for book in all_book_on_page:
+    all_books_on_page = soup.select(books_selector)
+    for book in all_books_on_page:
         path = book['href']
         all_books_path.append(path)
     return all_books_path
