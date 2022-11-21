@@ -52,14 +52,14 @@ def main():
     )
     parser.add_argument(
         '--skip_imgs',
-        choices=[True, False],
-        help='if True? do not download pictures',
+        action='store_true',
+        help='if True, do not download pictures',
         default=False
     )
     parser.add_argument(
         '--skip_txt',
-        choices=[True, False],
-        help='if True? do not download books',
+        action='store_true',
+        help='if True, do not download books',
         default=False
     )
     args = parser.parse_args()
@@ -75,6 +75,7 @@ def main():
         url = f'https://tululu.org/l55/{page}'
         response = requests.get(url)
         response.raise_for_status()
+        check_for_redirect(response)
         soup = BeautifulSoup(response.text, 'lxml')
         all_books_path = get_books_url(soup)
         for book_path in all_books_path:
