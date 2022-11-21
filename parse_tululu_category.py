@@ -120,9 +120,8 @@ def main():
             print('Failed connection..', file=sys.stderr)
             time.sleep(3)
             continue
-        books_json = json.dumps(all_books_params, ensure_ascii=False)
         with open(f'{args.json_path}books.json', 'w') as file:
-            file.write(books_json)
+            json.dump(all_books_params, file, ensure_ascii=False)
 
 
 if __name__ == '__main__':
