@@ -33,7 +33,7 @@ def download_book_img(url, img_url):
     img_name = img_path[-1]
     if img_name == 'nopic.gif':
         return Path.cwd() / 'img' / 'nopic.gif'
-    file_path = Path.cwd() / f'img/{img_name}'
+    file_path = Path.cwd() / 'img' / f'{img_name}'
     with open(file_path, 'wb') as file:
         file.write(response.content)
     return file_path
@@ -56,7 +56,7 @@ def get_book_params(soup):
 
 def check_for_redirect(response):
     if response.history:
-        raise URLError('Book not found')
+        raise URLError('Url not found')
 
 
 if __name__ == '__main__':
