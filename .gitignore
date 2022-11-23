@@ -154,6 +154,7 @@ cython_debug/
 .cache/
 .config/
 .upm/
+img/
 images/
 books/
 .bs4_tutorial
