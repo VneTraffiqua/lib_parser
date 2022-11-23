@@ -107,8 +107,15 @@ def main():
                     }
                     all_books_params.append(book_params)
                 except URLError:
+                    print(f'{book_url} - Book not found')
                     continue
-                page += 1
+                except requests.exceptions.HTTPError:
+                    print('HTTP error...')
+                    continue
+                except requests.exceptions.ConnectionError:
+                    time.sleep(3)
+                    continue
+            page += 1
         except URLError:
             page += 1
             continue
@@ -120,8 +127,11 @@ def main():
             print('Failed connection..', file=sys.stderr)
             time.sleep(3)
             continue
-        with open(f'{args.json_path}books.json', 'w') as file:
-            json.dump(all_books_params, file, ensure_ascii=False)
+    json_path = Path.cwd() / args.json_path / 'books.json'
+    with Path.open(json_path, 'w') as file:
+        json.dump(
+            all_books_params, file, ensure_ascii=False, skipkeys=True
+        )
 
 
 if __name__ == '__main__':
