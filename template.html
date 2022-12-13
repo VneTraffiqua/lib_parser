@@ -17,7 +17,7 @@
       <nav aria-label="Page navigation example">
       <ul class="pagination">
         {% if number_of_page == 1 %}
-          <li class="page-item disabled"><a class="page-link" href="../pages/index{{number_of_page - 1}}.html" tabindex="-1" aria-disabled="true">Назад</a></li>
+          <li class="page-item disabled"><a class="page-link" href="../pages/index{{number_of_page - 1}}.html" tabindex="-1">Назад</a></li>
         {% else %}
           <li class="page-item"><a class="page-link" href="../pages/index{{number_of_page - 1}}.html" tabindex="-1" aria-disabled="true">Назад</a></li>
         {% endif %}
@@ -29,7 +29,7 @@
           {% endif %}
         {% endfor %}
         {% if number_of_page == count_pages %}
-          <li class="page-item disabled"><a class="page-link" href="../pages/index{{number_of_page + 1}}.html"  tabindex="-1" aria-disabled="true">Вперед</a></li>
+          <li class="page-item disabled"><a class="page-link" href="../pages/index{{number_of_page + 1}}.html"  tabindex="-1" >Вперед</a></li>
         {% else %}
           <li class="page-item"><a class="page-link" href="../pages/index{{number_of_page + 1}}.html" >Вперед</a></li>
         {% endif %}
