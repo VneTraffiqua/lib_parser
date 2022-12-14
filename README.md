@@ -56,6 +56,19 @@ python parse_tululu_category.py --start_page 500 --last_page 505
 
 ```
 
+### render_website.py 
+
+This script will create site pages from a `template.html` and  `books.json` file.
+Then it runs the site on the local machine.
+
+To start the script, write in the console:
+```commandline
+python3 render_website.py
+```
+An example of site work can be seen at the link [lib_parser](https://vnetraffiqua.github.io/lib_parser/pages/index1.html).
+
+![](screen.jpg)
+
 =========================================================
 
 The code is written for educational purposes on online-course for web-developers [dvmn.org](https://dvmn.org).
