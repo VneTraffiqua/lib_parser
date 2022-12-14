@@ -2,9 +2,7 @@
 
 ## Description
 
-The script print data about the selected books.
-
-In parameters, you need to specify from which id and to which id to parse books.
+The scripts in the repository parse data from the [tululu.org](https://tululu.org/) site and render the web pages of the [online library](https://vnetraffiqua.github.io/lib_parser/pages/index1.html) article.
 
 ## How to install?
 
