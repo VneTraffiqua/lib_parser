@@ -21,14 +21,14 @@
         {% else %}
           <li class="page-item"><a class="page-link" href="../pages/index{{number_of_page - 1}}.html" tabindex="-1">Назад</a></li>
         {% endif %}
-        {% for num_page in range(1, count_pages + 1) %}
+        {% for num_page in range(1, pages_count + 1) %}
           {% if num_page == number_of_page %}
             <li class="page-item active"><a class="page-link" href="../pages/index{{num_page}}.html">{{num_page}}</a></li>
           {% else %}
             <li class="page-item"><a class="page-link" href="../pages/index{{num_page}}.html">{{num_page}}</a></li>
           {% endif %}
         {% endfor %}
-        {% if number_of_page == count_pages %}
+        {% if number_of_page == pages_count %}
           <li class="page-item disabled"><a class="page-link" href="../pages/index{{number_of_page + 1}}.html"  tabindex="-1" >Вперед</a></li>
         {% else %}
           <li class="page-item"><a class="page-link" href="../pages/index{{number_of_page + 1}}.html" >Вперед</a></li>
