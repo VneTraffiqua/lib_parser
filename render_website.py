@@ -16,7 +16,8 @@ def on_reload():
         autoescape=select_autoescape(['html', 'xml'])
     )
     os.makedirs('./pages', exist_ok=True)
-    books_pages = list(chunked(books, 20))
+    books_on_pages = 20
+    books_pages = list(chunked(books, books_on_pages))
     for num, books_on_page in enumerate(books_pages, 1):
         grouped_books = list(chunked(books_on_page, 2))
         template = env.get_template('template.html')
