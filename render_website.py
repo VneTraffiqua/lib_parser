@@ -23,7 +23,7 @@ def on_reload():
         rendered_page = template.render(
             number_of_page=num,
             grouped_books=grouped_books,
-            count_pages=len(books_pages)
+            pages_count=len(books_pages)
         )
         with open(
                 Path.cwd() / 'pages' / f'index{num}.html',
