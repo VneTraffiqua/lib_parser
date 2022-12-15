@@ -9,8 +9,8 @@ from pathlib import Path
 
 def on_reload():
     with open('books.json', 'r') as file:
-        books_json = file.read()
-    books = json.loads(books_json)
+        books = json.load(file)
+
     env = Environment(
         loader=FileSystemLoader('./'),
         autoescape=select_autoescape(['html', 'xml'])
